@@ -13,11 +13,13 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Graficas1Component } from './graficas1/graficas1.component';
 import { ProgressComponent } from './progress/progress.component';
+import { AccountSettingsComponent } from './account-settings/account-settings.component';
 
 //temporal
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component';
 
 import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component';
+
 
 @NgModule({
     declarations: [
@@ -26,7 +28,8 @@ import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.co
         ProgressComponent,
         PagesComponent,
         IncrementadorComponent,
-        GraficoDonaComponent
+        GraficoDonaComponent,
+        AccountSettingsComponent
     ],
     exports: [ //Componentes accedidos desde afuera de este módulo
         DashboardComponent,
