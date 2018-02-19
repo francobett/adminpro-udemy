@@ -18,7 +18,7 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
     imports: [
         RouterModule,
         CommonModule
-    ]
+    ],
     exports:[
         HeaderComponent,
         SidebarComponent,
