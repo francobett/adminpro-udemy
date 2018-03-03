@@ -22,18 +22,104 @@ export class UsuarioService {
     this.cargarStorage();
    }
 
-   estaLogueado(){
-    return (this.token.length > 5) ? true : false;
+   actualizarUsuario( usuario:Usuario ){
+
+    let url = URL_SERVICIOS + '/usuario/' + usuario._id + '?token=' + this.token;
+    return this.http.put( url, usuario )
+          .map( (resp:any) =>{
+
+            //Si el usuario a actualizar es el logueado (o sea él mismo se actualiza)
+            if( usuario._id === this.usuario._id){
+
+              //Actualizar Local Storage
+              this.guardarStorage( resp.usuario._id, this.token , resp.usuario );
+
+            }
+
+            swal('Usuario Actualizado', usuario.nombre, 'success');
+
+            return true;
+          });
+
+   }
+
+   borrarUsuario( id:string ){
+
+    let url = URL_SERVICIOS + '/usuario/' + id + '?token=' + this.token;
+
+    return this.http.delete(url)
+              .map( (resp:any) => {
+                swal(
+                  'Eliminado!',
+                  'El usuario '+ resp.usuario.nombre + ' ha sido eliminado',
+                  'success'
+                )
+                return true;
+              });
+
+   }
+
+   buscarUsuarios( termino:string ){
+
+    let url = URL_SERVICIOS + '/busqueda/coleccion/usuario/' + termino ;
+
+    return this.http.get(url)
+                .map( (resp:any) => resp.usuario)
+
+   }
+
+   cambiarImagen( archivo:File, id:string){
+
+ 
+    //Con Promesas y xhr de AJAX
+    this._subirArchivo.subirArchivo(archivo , 'usuarios' , id )
+        .then( (resp:any) => {
+
+          this.usuario.img = resp.usuarioActualizado.img;
+          swal('Imagen actualizada', this.usuario.nombre, 'success');
+          this.guardarStorage( id , this.token, this.usuario);
+        })
+        .catch( error => {
+          console.log(error)
+        });
+
+
    }
 
    cargarStorage(){
-     if( localStorage.getItem('token') ){
-       this.token = localStorage.getItem('token');
-       this.usuario = JSON.parse(localStorage.getItem('usuario') );
-     }else{
-       this.token = '';
-       this.usuario = null;
-     }
+    if( localStorage.getItem('token') ){
+      this.token = localStorage.getItem('token');
+      this.usuario = JSON.parse(localStorage.getItem('usuario') );
+    }else{
+      this.token = '';
+      this.usuario = null;
+    }
+   }
+
+   cargarUsuarios( desde:Number = 0 ){ //Cargar los usuarios desde el n° DESDE, mostrando 5 (eso es lo que muestra el get del bcknd)
+
+    let url = URL_SERVICIOS + '/usuario?desde=' + desde;
+
+    return this.http.get( url );
+
+   }
+
+   crearUsuario( usuario:Usuario ){
+
+    let url = URL_SERVICIOS + '/usuario';
+
+    return  this.http.post( url, usuario )
+            .map( (resp:any) => {
+
+              swal('Usuario creado', usuario.email, 'success');
+              return resp.usuario;
+
+            });
+
+   }
+
+   estaLogueado(){
+    return (this.token.length > 5) ? true : false;
    }
 
    guardarStorage( id:string, token:string, usuario:Usuario){
@@ -90,54 +176,5 @@ export class UsuarioService {
           });
    }
 
-   crearUsuario( usuario:Usuario ){
-
-    let url = URL_SERVICIOS + '/usuario';
-
-    return  this.http.post( url, usuario )
-            .map( (resp:any) => {
-
-              swal('Usuario creado', usuario.email, 'success');
-              return resp.usuario;
-
-            });
-
-   }
-
-   actualizarUsuario( usuario:Usuario ){
-
-    let url = URL_SERVICIOS + '/usuario/' + usuario._id + '?token=' + this.token;
-    return this.http.put( url, usuario )
-          .map( (resp:any) =>{
-
-            //Actualizar Local Storage
-            this.guardarStorage( resp.usuario._id, this.token , resp.usuario );
-            swal('Usuario Actualizado', usuario.nombre, 'success');
-
-            return true;
-          });
-
-   }
-
-   cambiarImagen( archivo:File, id:string){
-
- 
-    //Con Promesas y xhr de AJAX
-    this._subirArchivo.subirArchivo(archivo , 'usuarios' , id )
-        .then( (resp:any) => {
-
-          this.usuario.img = resp.usuarioActualizado.img;
-          swal('Imagen actualizada', this.usuario.nombre, 'success');
-          this.guardarStorage( id , this.token, this.usuario);
-        })
-        .catch( error => {
-          console.log(error)
-        });
-
-
-   }
-
-
-   
 
 }

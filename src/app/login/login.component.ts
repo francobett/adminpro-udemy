@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
       let token = googleUser.getAuthResponse().id_token; // Obtener token del usuario
       
       this._usuarioService.loginGoogle( token )
-          .subscribe( () => this.router.navigate(['/dashboard']) );
+          .subscribe( () => window.location.href = '#/dashboard' );
 
     });
 
@@ -80,9 +80,10 @@ export class LoginComponent implements OnInit {
     );
 
     this._usuarioService.login( usuario, forma.value.recuerdame )
-        .subscribe( correcto => this.router.navigate(['/dashboard']) );
-
+        .subscribe( correcto => window.location.href = '#/dashboard' );
+    // Usamos el window.location.href = '#/dashboard', en vez del
     // this.router.navigate(['/dashboard']);
+    // Ya que se produce algún tipo de error en el template al enviar al dashboard
   }
 
 }
