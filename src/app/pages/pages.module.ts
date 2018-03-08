@@ -19,14 +19,12 @@ import { ProgressComponent } from './progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PromesasComponent } from './promesas/promesas.component';
 
-//temporal
 import { IncrementadorComponent } from '../components/incrementador/incrementador.component';
 
 import { GraficoDonaComponent } from '../components/grafico-dona/grafico-dona.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
-import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 import { HospitalesComponent } from './hospitales/hospitales.component';
 import { MedicosComponent } from './medicos/medicos.component';
 import { MedicoComponent } from './medicos/medico.component';
@@ -38,7 +36,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
         DashboardComponent,
         Graficas1Component,
         ProgressComponent,
-        PagesComponent,
+        //PagesComponent, No se debe cargar acá para el lazy load, se debe declarar en el app.module
         IncrementadorComponent,
         GraficoDonaComponent,
         AccountSettingsComponent,
@@ -46,7 +44,6 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
         RxjsComponent,
         ProfileComponent,
         UsuariosComponent,
-        ModalUploadComponent,
         HospitalesComponent,
         MedicosComponent,
         MedicoComponent,
@@ -55,8 +52,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
     exports: [ //Componentes accedidos desde afuera de este módulo
         DashboardComponent,
         Graficas1Component,
-        ProgressComponent,
-        PagesComponent
+        ProgressComponent
     ],
     imports: [
         CommonModule,

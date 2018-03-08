@@ -15,7 +15,7 @@ import swal from 'sweetalert2';
 export class UsuarioService {
 
   usuario: Usuario;
-  token: string ;
+  token: string;
   menu: any[] = [];
 
   constructor(
@@ -200,6 +200,25 @@ export class UsuarioService {
             return Observable.throw(error);
             
           });
+   }
+
+   renuevaToken(){
+     let url = URL_SERVICIOS + '/login/renuevatoken?token=' + this.token;
+     
+     return this.http.get( url )
+        .map( (resp:any) =>{
+          //Guardar el nuevo token
+          this.token = resp.token;
+          localStorage.setItem('token', this.token);
+          console.log('token renovado');
+          return true;
+        })
+        .catch( error => {
+          this.router.navigate(['/login']);
+          swal( 'No se pudo renovar token' , 'No fue posible renovar el token', 'error');
+          return Observable.throw(error);
+        });
+
    }
 
 
